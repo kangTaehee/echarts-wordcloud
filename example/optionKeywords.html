@@ -1,8 +1,9 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <meta charset="utf-8">
+        <script src='https://code.jquery.com/jquery-3.5.1.min.js'></script>
         <script src='https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js'></script>
-
         <!-- <script src="../../echarts/dist/echarts.js"></script> -->
         <script src='../dist/echarts-wordcloud.js'></script>
     </head>
@@ -17,12 +18,11 @@
         <div id='main'></div>
         <script>
             var chart = echarts.init(document.getElementById('main'));
-
             var keywords = {
               "visualMap": 22199,
               "continuous": 10288,
               "contoller": 620,
-              "series": 274470,
+              "대한강": 274470,
               "gauge": 12311,
               "detail": 1206,
               "piecewise": 4885,
@@ -357,7 +357,6 @@
               "textBaseline": 1,
               "brush": 3
             };
-
             var data = [];
             for (var name in keywords) {
                 data.push({
@@ -365,19 +364,21 @@
                     value: Math.sqrt(keywords[name])
                 })
             }
-
             var maskImage = new Image();
-
             var option = {
                 series: [ {
                     type: 'wordCloud',
                     sizeRange: [4, 150],
                     rotationRange: [0, 0],
                     gridSize: 0,
-                    shape: 'pentagon',
+                    shape: 'triangle',
+                // The shape of the "cloud" to draw. Can be any polar equation represented as a
+                // callback function, or a keyword present. Available presents are circle (default),
+                // cardioid (apple or heart shape curve, the most known polar equation), diamond (
+                // alias of square), triangle-forward, triangle, (alias of triangle-upright, pentagon, and star.
                     maskImage: maskImage,
                     drawOutOfBound: false,
-                    // layoutAnimation: true,
+                    layoutAnimation: true,
                     keepAspect: true,
                     textStyle: {
                         fontWeight: 'bold',
@@ -399,18 +400,50 @@
                     })
                 } ]
             };
-
             maskImage.onload = function () {
                 option.series[0].maskImage
                 chart.setOption(option);
             }
-
             maskImage.src = './logo.png';
-
+            // maskImage.src = './s2.png';
+            // const icoMan = 'path://M20.0,20.999 L0.0,20.999 L0.999,16.0 C0.999,16.0 7.211,16.929 10.0,20.0 C10.0,20.0 14.50,14.616 20.0,16.0 L20.0,16.999 C20.0,16.999 14.737,17.39 12.999,19.0 L20.0,19.0 L20.0,20.999 ZM3.175,14.301 C4.582,11.721 7.112,10.0 10.0,10.0 C12.920,10.0 15.474,11.759 16.871,14.387 C16.871,14.387 13.428,14.446 10.0,16.999 C7.582,15.32 3.175,14.301 3.175,14.301 ZM4.999,5.0 C4.999,2.238 7.238,0.0 10.0,0.0 C12.761,0.0 14.999,2.238 14.999,5.0 C14.999,7.761 12.761,10.0 10.0,10.0 C7.238,10.0 4.999,7.761 4.999,5.0 Z';
+            // maskImage.src = icoMan;
             window.onresize = function () {
                 chart.resize();
             }
-
+            function reload (v) {
+                switch (v) {
+                    case 1:
+                    maskImage.src = './logo.png';
+                    chart.resize();
+                        break;
+                    case 2:
+                    maskImage.src = './s2.png';
+                    chart.resize();
+                        break;
+                    case 3:
+                    maskImage.src = './s.png';
+                    chart.resize();
+                        break;
+                
+                    default:
+                        break;
+                }
+            
+            }
         </script>
+        <style>
+            .set{
+                position:fixed;
+                left:10px;
+                top:20px;
+            }
+        </style>
+        <div class="set">
+            <h2>다시그리기</h2>
+            <button type="button" onclick="reload(1)">고래 <img src="./logo.png"  width="50" alt=""></button>
+            <button type="button" onclick="reload(2)">원1 <img src="./s2.png"  width="50" alt=""></button>
+            <button type="button" onclick="reload(3)">원2 <img src="./s.png"  width="50" alt=""></button>
+        </div>
     </body>
 </html>
